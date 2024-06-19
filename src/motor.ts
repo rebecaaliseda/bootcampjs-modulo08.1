@@ -14,40 +14,44 @@ export const obtenPacientesAsignadosAPediatriaYMenorDeDiezAnios = (
   pacientes: Pacientes[]
 ): Pacientes[] => {
   let listaDePacientes: Pacientes[] = [];
-  const pacientesAsignadosAPediatria = obtenPacientesAsignadosAPediatria(pacientes);
-  for (let i = 0; i < pacientesAsignadosAPediatria.length; i++) {
-    if (pacientesAsignadosAPediatria[i].edad < 10) {
-      listaDePacientes = [...listaDePacientes, { ...pacientesAsignadosAPediatria[i] }];
+  for (let i = 0; i < pacientes.length; i++) {
+    if (pacientes[i].especialidad === 'Pediatra' && pacientes[i].edad < 10) {
+      listaDePacientes = [...listaDePacientes, { ...pacientes[i] }];
     }
   }
   return listaDePacientes;
 };
 
 export const activarProtocoloUrgencia = (pacientes: Pacientes[]): boolean => {
-  let activarProctolo = false;
+  let activarProtocolo = false;
   for (let i = 0; i < pacientes.length; i++) {
     if (pacientes[i].frecuenciaCardiaca > 100 && pacientes[i].temperatura > 39) {
-      activarProctolo = true;
+      activarProtocolo = true;
+      break;
     }
   }
-  return activarProctolo;
+  return activarProtocolo;
 };
 
 export const reasignaPacientesAMedicoFamilia = (pacientes: Pacientes[]): Pacientes[] => {
-  let pacientesReasignadosAMedicoFamilia: Pacientes[] = [];
-  const pacientesAsignadosAPediatria = obtenPacientesAsignadosAPediatria(pacientes);
-  for (let i = 0; i < pacientesAsignadosAPediatria.length; i++) {
-    pacientesReasignadosAMedicoFamilia = [
-      ...pacientesReasignadosAMedicoFamilia,
-      { ...pacientesAsignadosAPediatria[i], especialidad: 'Medico de familia' },
-    ];
+  let listaDePacientes: Pacientes[] = pacientes;
+  for (let i = 0; i < pacientes.length; i++) {
+    if (pacientes[i].especialidad === 'Pediatra') {
+      pacientes[i].especialidad = 'Medico de familia';
+    }
   }
-  return pacientesReasignadosAMedicoFamilia;
+  return listaDePacientes;
 };
 
 export const HayPacientesDePediatria = (pacientes: Pacientes[]): boolean => {
-  const pacientesAsignadosAPediatria = obtenPacientesAsignadosAPediatria(pacientes);
-  return pacientesAsignadosAPediatria.length > 0 ? true : false;
+  let hayPacientesDePediatria = false;
+  for (let i = 0; i < pacientes.length; i++) {
+    if (pacientes[i].especialidad === 'Pediatra') {
+      hayPacientesDePediatria = true;
+      break;
+    }
+  }
+  return hayPacientesDePediatria;
 };
 
 export const cuentaPacientesPorEspecialidad = (
@@ -59,12 +63,18 @@ export const cuentaPacientesPorEspecialidad = (
     cardiologia: 0,
   };
   for (let i = 0; i < pacientes.length; i++) {
-    if (pacientes[i].especialidad === 'Medico de familia') {
-      numeroPacientesPorEspecialidad.medicoDeFamilia++;
-    } else if (pacientes[i].especialidad === 'Pediatra') {
-      numeroPacientesPorEspecialidad.pediatria++;
-    } else if (pacientes[i].especialidad === 'Cardiólogo') {
-      numeroPacientesPorEspecialidad.cardiologia++;
+    switch (pacientes[i].especialidad) {
+      case 'Medico de familia':
+        numeroPacientesPorEspecialidad.medicoDeFamilia++;
+        break;
+      case 'Pediatra':
+        numeroPacientesPorEspecialidad.pediatria++;
+        break;
+      case 'Cardiólogo':
+        numeroPacientesPorEspecialidad.cardiologia++;
+        break;
+      default:
+        break;
     }
   }
   return numeroPacientesPorEspecialidad;

@@ -24,8 +24,8 @@ const activoProtocoloDeUgencia = activarProtocoloUrgencia(pacientes);
 console.log({ activoProtocoloDeUgencia });
 
 // Mostrar por consola paciences reasignados a médico de familia
-const pacientesReasignadosAMedicoFamilia = reasignaPacientesAMedicoFamilia(pacientes);
-console.log({ pacientesReasignadosAMedicoFamilia });
+const listaPacientes = reasignaPacientesAMedicoFamilia(pacientes);
+console.log({ listaPacientes });
 
 // Mostrar por consola si hay o no pacientes asignados a pediatría
 const hayPacientesAsignadosAPediatria = HayPacientesDePediatria(pacientes);
