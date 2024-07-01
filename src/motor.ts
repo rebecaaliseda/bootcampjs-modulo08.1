@@ -34,10 +34,10 @@ export const activarProtocoloUrgencia = (pacientes: Pacientes[]): boolean => {
 };
 
 export const reasignaPacientesAMedicoFamilia = (pacientes: Pacientes[]): Pacientes[] => {
-  let listaDePacientes: Pacientes[] = pacientes;
-  for (let i = 0; i < pacientes.length; i++) {
-    if (pacientes[i].especialidad === 'Pediatra') {
-      pacientes[i].especialidad = 'Medico de familia';
+  let listaDePacientes: Pacientes[] = JSON.parse(JSON.stringify(pacientes));
+  for (let i = 0; i < listaDePacientes.length; i++) {
+    if (listaDePacientes[i].especialidad === 'Pediatra') {
+      listaDePacientes[i].especialidad = 'Medico de familia';
     }
   }
   return listaDePacientes;
